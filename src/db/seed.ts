@@ -60,12 +60,25 @@ export async function asegurarBase(): Promise<void> {
   })
 }
 
-/** Crea la materia Derecho con la Unidad 1 vacía, sin tarjetas inventadas. */
+/**
+ * Estructura del programa de la Unidad 1. Es el temario, no contenido de
+ * relleno: las tarjetas quedan vacías para que las cargue el estudiante.
+ */
+export const SUBTEMAS_CONSUMIDORES = [
+  { nombre: 'Necesidad de protección', descripcion: 'Por qué el consumidor es la parte débil de la relación.' },
+  { nombre: 'Relación de consumo', descripcion: 'Quiénes intervienen y qué la caracteriza.' },
+  { nombre: 'Derechos del consumidor', descripcion: 'Derechos reconocidos por la ley y la Constitución.' },
+  { nombre: 'Obligaciones de los proveedores', descripcion: 'Deberes de información, trato digno y garantía.' },
+  { nombre: 'Protección jurídica', descripcion: 'Ley 24.240, normativa y vías de tutela.' },
+  { nombre: 'Organismos de defensa', descripcion: 'Autoridades y entidades de aplicación y control.' },
+]
+
+/** Crea la materia Derecho con la Unidad 1 y su temario, sin tarjetas inventadas. */
 export async function crearMateriaDerecho(): Promise<string> {
   const materiaId = uid('mat_')
   const unidadId = uid('uni_')
   const ahora = Date.now()
-  await db.transaction('rw', [db.materias, db.unidades], async () => {
+  await db.transaction('rw', [db.materias, db.unidades, db.subtemas], async () => {
     await db.materias.add({
       id: materiaId,
       nombre: 'Derecho',
@@ -84,6 +97,17 @@ export async function crearMateriaDerecho(): Promise<string> {
       creadaEn: ahora,
       metaDominio: 80,
     })
+    await db.subtemas.bulkAdd(
+      SUBTEMAS_CONSUMIDORES.map((s, i) => ({
+        id: uid('sub_'),
+        materiaId,
+        unidadId,
+        nombre: s.nombre,
+        descripcion: s.descripcion,
+        orden: i,
+        creadoEn: ahora + i,
+      })),
+    )
   })
   return materiaId
 }

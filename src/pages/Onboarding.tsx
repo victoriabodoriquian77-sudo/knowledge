@@ -146,7 +146,7 @@ export function Onboarding({ onCompletado }: { onCompletado: () => void }) {
                 <span>
                   <span className="block text-[13.5px] font-extrabold text-ink">Empezar con Derecho → Unidad 1: Consumidores</span>
                   <span className="mt-0.5 block text-[12px] font-semibold leading-snug text-muted">
-                    Se crea la materia y la unidad vacía. Los subtemas y las tarjetas los creás vos.
+                    Se crea la materia, la unidad y su temario. Las tarjetas las cargás vos.
                   </span>
                 </span>
               </label>
