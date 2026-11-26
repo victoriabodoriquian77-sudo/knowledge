@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="KNOWLEDGE">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8a74e2"/>
+      <stop offset="1" stop-color="#6b52cf"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#g)"/>
+  <circle cx="54" cy="8" r="12" fill="#5b45b5" opacity=".55"/>
+  <circle cx="6" cy="60" r="11" fill="#5b45b5" opacity=".55"/>
+  <path d="M17 23 L13 13 L24 19 Z" fill="#5b45b5"/>
+  <path d="M47 23 L51 13 L40 19 Z" fill="#5b45b5"/>
+  <rect x="15" y="17" width="34" height="34" rx="11" fill="#faf8f2"/>
+  <rect x="21" y="27" width="22" height="19" rx="6" fill="#fff"/>
+  <rect x="24.5" y="31" width="14" height="1.7" rx=".85" fill="#e8e5dc"/>
+  <rect x="24.5" y="35" width="14" height="1.7" rx=".85" fill="#e8e5dc"/>
+  <rect x="24.5" y="39" width="9" height="1.7" rx=".85" fill="#e8e5dc"/>
+  <circle cx="26.5" cy="23.5" r="4.4" fill="#24334a"/>
+  <circle cx="37.5" cy="23.5" r="4.4" fill="#24334a"/>
+  <circle cx="25.2" cy="22.1" r="1.5" fill="#fff"/>
+  <circle cx="36.2" cy="22.1" r="1.5" fill="#fff"/>
+  <path d="M29.2 27.4 L34.8 27.4 L32 30.6 Z" fill="#f6c84a"/>
+  <ellipse cx="21" cy="26.8" rx="2.6" ry="1.9" fill="#f17d78"/>
+  <ellipse cx="43" cy="26.8" rx="2.6" ry="1.9" fill="#f17d78"/>
+</svg>
