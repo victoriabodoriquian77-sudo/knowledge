@@ -17,6 +17,20 @@ Plataforma de estudio activo en español: recorrido tipo Duolingo + juegos tipo 
 - **Tus datos, tuyos**: todo en IndexedDB. Exportar backup JSON completo, importar respaldo, exportar tarjetas a CSV y a PDF imprimible.
 - **Funciona sin conexión** después de la primera carga, y se instala como app en iPhone y escritorio.
 
+## Enlace público
+
+**https://victoriabodoriquian77-sudo.github.io/knowledge/**
+
+La app está publicada en GitHub Pages desde la rama `gh-pages` (solo la compilación). Para actualizarla:
+
+```bash
+PAGES_BASE=/knowledge/ npm run build
+cp dist/index.html dist/404.html   # Pages necesita esto para los enlaces profundos
+# subir el contenido de dist/ a la rama gh-pages
+```
+
+`404.html` es una copia de `index.html` porque GitHub Pages no resuelve rutas profundas de una SPA: sin eso, entrar a `/knowledge/aprender` desde un enlace directo daría 404 en vez de abrir la app.
+
 ## Cómo correrlo
 
 ```bash
