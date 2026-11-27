@@ -42,6 +42,9 @@ export function KahootSesion({
   const [elegida, setElegida] = useState<number | null>(null)
   const [bloqueado, setBloqueado] = useState(false)
   const [puntos, setPuntos] = useState(0)
+  // `terminar` se llama desde un setTimeout: si leyera el estado `puntos`
+  // quedaría con el valor viejo y el récord se guardaría mal.
+  const puntosRef = useRef(0)
   const [racha, setRacha] = useState(0)
   const [aciertos, setAciertos] = useState(0)
   const [finalizando, setFinalizando] = useState(false)
@@ -81,7 +84,8 @@ export function KahootSesion({
     const rapidez = Math.max(0.35, 1 - ms / (segundos * 1000))
     const multiplicador = racha >= 8 ? 3 : racha >= 5 ? 2.5 : racha >= 3 ? 2 : racha >= 1 ? 1.5 : 1
     const ganados = correcta ? Math.round(base * rapidez * multiplicador) : 0
-    setPuntos((p) => p + ganados)
+    puntosRef.current += ganados
+    setPuntos(puntosRef.current)
     setRacha((r) => (correcta ? r + 1 : 0))
     if (correcta) setAciertos((a) => a + 1)
 
@@ -114,7 +118,7 @@ export function KahootSesion({
     const previo = await db.juegos.get('kahoot')
     await db.juegos.put({
       id: 'kahoot',
-      mejorPuntaje: Math.max(previo?.mejorPuntaje ?? 0, puntos),
+      mejorPuntaje: Math.max(previo?.mejorPuntaje ?? 0, puntosRef.current),
       mejorRacha: Math.max(previo?.mejorRacha ?? 0, sesion.rachaMaximaSesion),
       partidas: (previo?.partidas ?? 0) + 1,
       actualizadoEn: Date.now(),
