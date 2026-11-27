@@ -61,9 +61,14 @@ export function Aprender() {
   }
 
   const guardarUnidad = async () => {
-    // Al editar, la materia sale de la propia unidad; al crear, de la activa.
-    const materiaId = unidadModal.editando?.materiaId ?? materiaActiva
-    if (!materiaId) return
+    // Al editar, la materia sale de la propia unidad. Al crear, usamos la materia
+    // que se está viendo: puede venir del parámetro de la URL o, si no hay ninguno,
+    // de la primera de la lista (que es la que la pantalla muestra como activa).
+    const materiaId = unidadModal.editando?.materiaId ?? materiaActiva ?? materias?.[0]?.materia.id
+    if (!materiaId) {
+      toast('Creá primero una materia para poder agregarle unidades.', 'error')
+      return
+    }
     if (uNombre.trim().length < 2) {
       toast('Poné un nombre a la unidad.', 'error')
       return
