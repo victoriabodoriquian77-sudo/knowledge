@@ -11,6 +11,20 @@ export type Dimension = 'reconocimiento' | 'recuperacion' | 'comprension' | 'apl
 
 export type ClasificacionSrs = 'otra-vez' | 'dificil' | 'bien' | 'facil'
 
+/** De dónde salió un material: cargado por el usuario o generado por la IA. */
+export interface MaterialOrigen {
+  tipo: 'pdf' | 'manual'
+  archivo: string
+  generadoEn: number
+}
+
+/** Marca de una tarjeta que armó la IA, para poder identificarla después. */
+export interface OrigenIA {
+  generada: boolean
+  archivo: string
+  generadoEn: number
+}
+
 export interface Materia {
   id: ID
   nombre: string
@@ -20,6 +34,8 @@ export interface Materia {
   creadaEn: number
   orden: number
   archivada?: boolean
+  /** Presente si la materia se creó importando un documento. */
+  origen?: MaterialOrigen
 }
 
 export interface Unidad {
@@ -62,6 +78,8 @@ export interface Tarjeta {
   favorita: boolean
   creadaEn: number
   actualizadaEn: number
+  /** Presente si la tarjeta la generó la IA a partir de un documento. */
+  origenIA?: OrigenIA
 }
 
 /** Estado de aprendizaje por tarjeta (SRS tipo SM-2 simplificado + dimensiones). */

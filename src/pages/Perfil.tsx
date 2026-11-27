@@ -1,5 +1,5 @@
-import { useMemo, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   AlertTriangle,
@@ -31,6 +31,7 @@ import { useToast } from '../hooks/useToast'
 import { db } from '../db/database'
 import { CONFIG_DEFAULT, nivelDesdeXp, LOGROS, xpParaNivel } from '../lib/constants'
 import { exportarBackup, exportarCSV, exportarPDF, importarBackup } from '../lib/export'
+import { SeccionIA } from '../components/ia/SeccionIA'
 import { fmtFechaTs } from '../lib/format'
 
 export function Perfil() {
@@ -39,6 +40,16 @@ export function Perfil() {
   const ctx = useContexto()
   const { toast } = useToast()
   const navigate = useNavigate()
+  const [params] = useSearchParams()
+
+  // Los enlaces "Conectar IA" llegan con ?tab=ia: se baja hasta la sección.
+  useEffect(() => {
+    if (params.get('tab') !== 'ia') return
+    const t = setTimeout(() => {
+      document.getElementById('ia')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 220)
+    return () => clearTimeout(t)
+  }, [params])
 
   const [editando, setEditando] = useState(false)
   const [nombre, setNombre] = useState(perfil?.nombre ?? '')
@@ -188,6 +199,11 @@ export function Perfil() {
               </div>
             )}
           </Card>
+
+          {/* Inteligencia artificial */}
+          <div id="ia" className="scroll-mt-24">
+            <SeccionIA />
+          </div>
 
           {/* Datos */}
           <Card className="p-4">

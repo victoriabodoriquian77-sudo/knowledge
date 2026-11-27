@@ -69,7 +69,11 @@ export function AppShell() {
             <span className="inline-flex items-center gap-1">
               <Zap size={12} className="text-grape" /> {fmt(perfil?.xp ?? 0)} XP
             </span>
-            <NavLink to="/perfil" className="inline-flex items-center gap-1 hover:text-ink" aria-label="Configuración">
+            <NavLink
+              to="/perfil"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-lg transition hover:bg-white hover:text-ink"
+              aria-label="Configuración"
+            >
               <Settings2 size={13} />
             </NavLink>
           </div>

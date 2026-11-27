@@ -18,6 +18,8 @@ import { Perfil } from '../pages/Perfil'
 import { Logros } from '../pages/Logros'
 import { Repaso } from '../pages/Repaso'
 import { ExamenConfig } from '../pages/ExamenConfig'
+import { ImportarIA } from '../pages/ImportarIA'
+import { ChatTutor } from '../pages/ChatTutor'
 import { ResultadoSesion } from '../pages/ResultadoSesion'
 import { NoEncontrado } from '../pages/NoEncontrado'
 import { Lumi } from '../components/mascot/Lumi'
@@ -99,6 +101,8 @@ export function App() {
             <Route path="/perfil" element={<Perfil />} />
             <Route path="/logros" element={<Logros />} />
             <Route path="/repaso" element={<Repaso />} />
+            <Route path="/ia" element={<ImportarIA />} />
+            <Route path="/ia/chat" element={<ChatTutor />} />
             <Route path="*" element={<NoEncontrado />} />
           </Route>
           <Route path="/bienvenida" element={<Navigate to="/" replace />} />
