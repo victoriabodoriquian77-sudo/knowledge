@@ -21,9 +21,9 @@ import { Button } from '../components/ui/Button'
 import { Modal, Confirm } from '../components/ui/Modal'
 import { useMaterias } from '../hooks/useDatos'
 import { useToast } from '../hooks/useToast'
-import { actualizarMateria, crearMateria, eliminarMateria } from '../lib/crud'
+import { actualizarMateria, actualizarUnidad, crearMateria, crearUnidad, eliminarMateria, eliminarUnidad } from '../lib/crud'
 import { COLORES_MATERIA, ICONOS_MATERIA } from '../lib/constants'
-import type { Materia } from '../types/models'
+import type { Materia, Unidad } from '../types/models'
 
 const ICONOS: Record<string, typeof Scale> = {
   scale: Scale,
@@ -47,8 +47,43 @@ export function Aprender() {
   const [color, setColor] = useState(COLORES_MATERIA[0])
   const [icono, setIcono] = useState(ICONOS_MATERIA[0])
   const [guardando, setGuardando] = useState(false)
+  const [unidadModal, setUnidadModal] = useState<{ abierto: boolean; editando?: Unidad }>({ abierto: false })
+  const [uNombre, setUNombre] = useState('')
+  const [uDescripcion, setUDescripcion] = useState('')
+  const [confirmarUnidad, setConfirmarUnidad] = useState<Unidad | null>(null)
   const { toast } = useToast()
   const navigate = useNavigate()
+
+  const abrirUnidad = (editando?: Unidad) => {
+    setUNombre(editando?.nombre ?? '')
+    setUDescripcion(editando?.descripcion ?? '')
+    setUnidadModal({ abierto: true, editando })
+  }
+
+  const guardarUnidad = async () => {
+    // Al editar, la materia sale de la propia unidad; al crear, de la activa.
+    const materiaId = unidadModal.editando?.materiaId ?? materiaActiva
+    if (!materiaId) return
+    if (uNombre.trim().length < 2) {
+      toast('Poné un nombre a la unidad.', 'error')
+      return
+    }
+    setGuardando(true)
+    try {
+      if (unidadModal.editando) {
+        await actualizarUnidad(unidadModal.editando.id, { nombre: uNombre.trim(), descripcion: uDescripcion.trim() })
+        toast('Unidad actualizada.')
+      } else {
+        await crearUnidad({ materiaId, nombre: uNombre.trim(), descripcion: uDescripcion.trim() })
+        toast('Unidad creada. Ahora agregale subtemas.')
+      }
+      setUnidadModal({ abierto: false })
+    } catch {
+      toast('No pudimos guardar la unidad.', 'error')
+    } finally {
+      setGuardando(false)
+    }
+  }
 
   const abrirCrear = () => {
     setNombre('')
@@ -179,16 +214,27 @@ export function Aprender() {
                 </div>
 
                 <div className="space-y-2.5 p-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-muted">
+                      Unidades ({activa.unidades.length})
+                    </p>
+                    <button
+                      onClick={() => abrirUnidad()}
+                      className="inline-flex min-h-[32px] items-center gap-1 rounded-full bg-grape-tint px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-grape transition hover:bg-grape hover:text-white"
+                    >
+                      <Plus size={12} /> Nueva unidad
+                    </button>
+                  </div>
                   {activa.unidades.length === 0 && (
                     <p className="rounded-2xl bg-cream px-4 py-5 text-center text-[12.5px] font-semibold text-muted">
-                      Esta materia todavía no tiene unidades. Creá la primera abajo.
+                      Esta materia todavía no tiene unidades. Creá la primera con el botón de arriba.
                     </p>
                   )}
                   {activa.unidades.map((u, i) => (
-                    <motion.div key={u.unidad.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}>
+                    <motion.div key={u.unidad.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} className="group relative">
                       <Link
                         to={`/aprender/unidad/${u.unidad.id}`}
-                        className="group flex items-center gap-3.5 rounded-2xl border border-line bg-white p-3.5 transition hover:-translate-y-0.5 hover:border-grape/40 hover:shadow-card"
+                        className="flex items-center gap-3.5 rounded-2xl border border-line bg-white p-3.5 pr-20 transition hover:-translate-y-0.5 hover:border-grape/40 hover:shadow-card"
                       >
                         <div
                           className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl text-[15px] font-black"
@@ -206,8 +252,23 @@ export function Aprender() {
                           </p>
                           <Progress value={u.total ? (u.completados / u.total) * 100 : 0} className="mt-2" alto="h-1.5" />
                         </div>
-                        <ArrowRight size={16} className="shrink-0 text-stone transition group-hover:text-grape" />
                       </Link>
+                      <div className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center gap-1">
+                        <button
+                          onClick={(e) => { e.preventDefault(); abrirUnidad(u.unidad) }}
+                          className="grid h-8 w-8 place-items-center rounded-lg bg-cream text-muted transition hover:bg-grape-tint hover:text-grape"
+                          aria-label={`Editar ${u.unidad.nombre}`}
+                        >
+                          <Pencil size={13} />
+                        </button>
+                        <button
+                          onClick={(e) => { e.preventDefault(); setConfirmarUnidad(u.unidad) }}
+                          className="grid h-8 w-8 place-items-center rounded-lg bg-cream text-muted transition hover:bg-coral-tint hover:text-coral"
+                          aria-label={`Eliminar ${u.unidad.nombre}`}
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
                     </motion.div>
                   ))}
                 </div>
@@ -267,6 +328,43 @@ export function Aprender() {
           </div>
         </div>
       </Modal>
+
+      <Modal
+        abierto={unidadModal.abierto}
+        onCerrar={() => setUnidadModal({ abierto: false })}
+        titulo={unidadModal.editando ? 'Editar unidad' : 'Nueva unidad'}
+        descripcion="Cada unidad se divide en subtemas. Podés crear todas las que necesites."
+        pie={
+          <>
+            <Button variante="secundario" onClick={() => setUnidadModal({ abierto: false })}>Cancelar</Button>
+            <Button onClick={guardarUnidad} cargando={guardando}>{unidadModal.editando ? 'Guardar cambios' : 'Crear unidad'}</Button>
+          </>
+        }
+      >
+        <div className="space-y-3.5">
+          <div>
+            <label className="label" htmlFor="u-nombre">Nombre</label>
+            <input id="u-nombre" className="field" value={uNombre} onChange={(e) => setUNombre(e.target.value)} placeholder="Ej.: Unidad 2 · Contratos" autoFocus maxLength={90} />
+          </div>
+          <div>
+            <label className="label" htmlFor="u-desc">Descripción (opcional)</label>
+            <textarea id="u-desc" className="field min-h-[70px] resize-y" value={uDescripcion} onChange={(e) => setUDescripcion(e.target.value)} placeholder="Qué abarca esta unidad" maxLength={200} />
+          </div>
+        </div>
+      </Modal>
+
+      <Confirm
+        abierto={!!confirmarUnidad}
+        titulo={`¿Eliminar «${confirmarUnidad?.nombre}»?`}
+        detalle="Se eliminarán sus subtemas, tarjetas y el progreso asociado. Esta acción no se puede deshacer."
+        onCancelar={() => setConfirmarUnidad(null)}
+        onConfirmar={async () => {
+          if (!confirmarUnidad) return
+          await eliminarUnidad(confirmarUnidad.id)
+          setConfirmarUnidad(null)
+          toast('Unidad eliminada.')
+        }}
+      />
 
       <Confirm
         abierto={!!confirmar}

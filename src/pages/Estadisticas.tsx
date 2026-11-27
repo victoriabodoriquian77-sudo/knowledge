@@ -149,7 +149,7 @@ export function Estadisticas() {
     return [...mapa.entries()].map(([name, value]) => ({ name, value }))
   }, [sesiones])
 
-  const colores = ['#7961d8', '#56b8d9', '#23885c', '#f39a48', '#f17d78', '#f6c84a', '#35b779']
+  const colores = ['#6a51c4', '#1a7291', '#1c7350', '#9a570f', '#b83e37', '#f6c84a', '#35b779']
 
   if (!ctx) return null
   const sinDatos = sesiones.length === 0 && tarjetas.length === 0
@@ -220,8 +220,8 @@ export function Estadisticas() {
                 <AreaChart data={serie} margin={{ top: 4, right: 4, left: -22, bottom: 0 }}>
                   <defs>
                     <linearGradient id="gXp" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#7961d8" stopOpacity={0.35} />
-                      <stop offset="100%" stopColor="#7961d8" stopOpacity={0} />
+                      <stop offset="0%" stopColor="#6a51c4" stopOpacity={0.35} />
+                      <stop offset="100%" stopColor="#6a51c4" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e8e5dc" vertical={false} />
@@ -229,11 +229,11 @@ export function Estadisticas() {
                   <YAxis tick={{ fontSize: 10, fill: '#aeb7c4' }} axisLine={false} tickLine={false} width={38} />
                   <Tooltip
                     contentStyle={{ borderRadius: 12, border: '1px solid #e8e5dc', fontSize: 11, fontWeight: 600 }}
-                    labelStyle={{ fontSize: 10, color: '#718096', fontWeight: 800, textTransform: 'uppercase' }}
+                    labelStyle={{ fontSize: 10, color: '#5e6d81', fontWeight: 800, textTransform: 'uppercase' }}
                   />
-                  <Area type="monotone" dataKey="xp" name="XP" stroke="#7961d8" strokeWidth={2} fill="url(#gXp)" />
-                  <Line type="monotone" dataKey="correctas" name="Correctas" stroke="#23885c" strokeWidth={2} dot={false} />
-                  <Line type="monotone" dataKey="incorrectas" name="Incorrectas" stroke="#f17d78" strokeWidth={2} dot={false} />
+                  <Area type="monotone" dataKey="xp" name="XP" stroke="#6a51c4" strokeWidth={2} fill="url(#gXp)" />
+                  <Line type="monotone" dataKey="correctas" name="Correctas" stroke="#1c7350" strokeWidth={2} dot={false} />
+                  <Line type="monotone" dataKey="incorrectas" name="Incorrectas" stroke="#b83e37" strokeWidth={2} dot={false} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -287,8 +287,8 @@ export function Estadisticas() {
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart data={dimensiones} outerRadius="72%">
                     <PolarGrid stroke="#e8e5dc" />
-                    <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 10, fill: '#718096', fontWeight: 700 }} />
-                    <Radar dataKey="valor" stroke="#56b8d9" fill="#56b8d9" fillOpacity={0.35} strokeWidth={2} />
+                    <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 10, fill: '#5e6d81', fontWeight: 700 }} />
+                    <Radar dataKey="valor" stroke="#1a7291" fill="#1a7291" fillOpacity={0.35} strokeWidth={2} />
                     <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid #e8e5dc', fontSize: 11 }} />
                   </RadarChart>
                 </ResponsiveContainer>
@@ -368,7 +368,7 @@ export function Estadisticas() {
                     <YAxis tick={{ fontSize: 9.5, fill: '#aeb7c4' }} axisLine={false} tickLine={false} width={34} />
                     <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid #e8e5dc', fontSize: 11 }} />
                     <Bar dataKey="tarjetas" name="Tarjetas" fill="#f6c84a" radius={[5, 5, 0, 0]} />
-                    <Bar dataKey="minutos" name="Minutos" fill="#7961d8" radius={[5, 5, 0, 0]} />
+                    <Bar dataKey="minutos" name="Minutos" fill="#6a51c4" radius={[5, 5, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

@@ -113,14 +113,14 @@ export async function exportarPDF(tarjetas: Tarjeta[], ctx?: ContextoEstudio, op
   * { box-sizing: border-box; }
   body { font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; color: #24334a; margin: 0; font-size: 10.5pt; }
   h1 { font-size: 18pt; margin: 0 0 2mm; letter-spacing: -0.02em; }
-  .sub { font-size: 9pt; color: #718096; margin: 0 0 7mm; }
-  h2 { font-size: 11pt; text-transform: uppercase; letter-spacing: 0.08em; color: #7961d8;
+  .sub { font-size: 9pt; color: #5e6d81; margin: 0 0 7mm; }
+  h2 { font-size: 11pt; text-transform: uppercase; letter-spacing: 0.08em; color: #6a51c4;
        border-bottom: 0.6pt solid #e8e5dc; padding-bottom: 1.5mm; margin: 7mm 0 3mm; page-break-after: avoid; }
   .tarjeta { border: 0.6pt solid #e8e5dc; border-radius: 3mm; padding: 3.5mm 4mm; margin-bottom: 3mm; page-break-inside: avoid; }
   .preg { font-weight: 700; font-size: 10.5pt; margin: 0 0 1.5mm; }
   .resp { font-size: 9.5pt; color: #30445f; margin: 0; white-space: pre-line; }
   .meta { font-size: 7.5pt; color: #aeb7c4; margin-top: 1.5mm; text-transform: uppercase; letter-spacing: 0.06em; }
-  .teclas { margin-top: 1.5mm; font-size: 8pt; color: #7961d8; }
+  .teclas { margin-top: 1.5mm; font-size: 8pt; color: #6a51c4; }
   .lineas { margin-top: 2mm; border-top: 0.4pt dashed #cfd6df; height: 12mm; }
   .pie { position: fixed; bottom: 0; left: 0; right: 0; font-size: 7.5pt; color: #aeb7c4; text-align: center; }
   @media print { .no-print { display: none; } }

@@ -98,7 +98,7 @@ export function AppShell() {
               <Zap size={15} className="text-grape" />
               <span className="text-[12.5px] font-extrabold text-ink">{fmt(perfil?.xp ?? 0)}</span>
             </div>
-            <NavLink to="/perfil" className="ml-0.5 grid h-9 w-9 place-items-center rounded-full bg-ink text-[12px] font-black text-sun lg:hidden" aria-label="Perfil">
+            <NavLink to="/perfil" className="ml-0.5 grid h-10 w-10 place-items-center rounded-full bg-ink text-[12px] font-black text-sun lg:hidden" aria-label="Perfil">
               {(perfil?.nombre || 'E').slice(0, 1).toUpperCase()}
             </NavLink>
           </div>

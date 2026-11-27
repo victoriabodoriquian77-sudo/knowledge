@@ -13,7 +13,7 @@ export default defineConfig({
         short_name: 'Knowledge',
         description: 'Plataforma de estudio activo: tarjetas, juegos, repaso espaciado y progreso real.',
         lang: 'es',
-        theme_color: '#7961d8',
+        theme_color: '#6a51c4',
         background_color: '#faf8f2',
         display: 'standalone',
         start_url: '/',

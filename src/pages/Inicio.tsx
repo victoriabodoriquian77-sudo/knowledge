@@ -154,7 +154,7 @@ export function Inicio() {
                   Reclamar recompensa
                 </Button>
               ) : (
-                <Link to="/perfil" className="mt-4 inline-flex items-center gap-1 text-[12px] font-extrabold uppercase tracking-wide text-white/80 hover:text-white">
+                <Link to="/perfil" className="mt-4 inline-flex items-center gap-1 py-2 text-[12px] font-extrabold uppercase tracking-wide text-white/80 hover:text-white">
                   Ver todas las misiones <ChevronRight size={14} />
                 </Link>
               )}
@@ -176,11 +176,11 @@ export function Inicio() {
       </section>
 
       {/* Recorrido actual */}
-      <section className="grid gap-4 lg:grid-cols-[1.55fr_1fr]">
-        <Card className="p-5">
+      <section className="grid min-w-0 gap-4 lg:grid-cols-[1.55fr_1fr]">
+        <Card className="min-w-0 p-5">
           <div className="flex items-center justify-between">
             <Eyebrow color="text-grass">Tu recorrido</Eyebrow>
-            <Link to="/aprender" className="inline-flex items-center gap-1 text-[11.5px] font-extrabold uppercase tracking-wide text-muted hover:text-ink">
+            <Link to="/aprender" className="inline-flex items-center gap-1 py-1.5 text-[11.5px] font-extrabold uppercase tracking-wide text-muted hover:text-ink">
               Ver todo <ChevronRight size={13} />
             </Link>
           </div>
@@ -191,7 +191,7 @@ export function Inicio() {
                 const unidad = m.unidades.find((u) => u.completados < u.total) ?? m.unidades[0]
                 return (
                   <div key={m.materia.id}>
-                    <div className="flex items-baseline justify-between gap-3">
+                    <div className="flex min-w-0 items-baseline justify-between gap-3">
                       <div className="min-w-0">
                         <p className="truncate text-[15px] font-extrabold text-ink">
                           {m.materia.nombre} <span className="text-stone">/</span>{' '}
@@ -212,7 +212,7 @@ export function Inicio() {
                       {unidad && unidad.subtemas.length > 0 && (
                         <Link
                           to={`/aprender/unidad/${unidad.unidad.id}`}
-                          className="shrink-0 text-[11.5px] font-extrabold uppercase tracking-wide text-grape hover:text-grape-deep"
+                          className="inline-flex h-8 shrink-0 items-center rounded-lg px-2 text-[11.5px] font-extrabold uppercase tracking-wide text-grape hover:bg-grape-tint hover:text-grape-deep"
                         >
                           Abrir
                         </Link>

@@ -11,11 +11,11 @@ export type AnimoLumi =
   | 'sorprendido'
 
 const PALETA = {
-  cuerpo: '#7961d8',
+  cuerpo: '#6a51c4',
   cuerpoOscuro: '#5b45b5',
   panza: '#fff3cc',
-  mejilla: '#f17d78',
-  pico: '#f39a48',
+  mejilla: '#b83e37',
+  pico: '#9a570f',
   ojo: '#24334a',
   brillo: '#ffffff',
 }
@@ -148,7 +148,7 @@ export function Lumi({
               cx={36 + i * 32}
               cy={54}
               r={4 + (i % 2) * 2}
-              fill={['#f6c84a', '#f17d78', '#56b8d9', '#35b779', '#f39a48'][i]}
+              fill={['#f6c84a', '#b83e37', '#1a7291', '#35b779', '#9a570f'][i]}
               animate={{ y: [-6, -26, -6], opacity: [1, 0.2, 1] }}
               transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.16 }}
             />

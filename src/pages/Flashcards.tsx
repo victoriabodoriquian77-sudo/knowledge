@@ -135,7 +135,7 @@ export function Flashcards() {
           </select>
           <button
             onClick={() => setFavoritas((v) => !v)}
-            className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-bold transition ${favoritas ? 'border-sun-deep bg-sun-tint text-sun-deep' : 'border-line bg-white text-muted hover:border-stone'}`}
+            className={`inline-flex min-h-[32px] items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-bold transition ${favoritas ? 'border-sun-deep bg-sun-tint text-sun-deep' : 'border-line bg-white text-muted hover:border-stone'}`}
           >
             <Star size={11} className={favoritas ? 'fill-sun-deep' : ''} /> Favoritas
           </button>
@@ -176,7 +176,7 @@ export function Flashcards() {
                   <div className="flex items-start gap-3">
                     <button
                       onClick={async () => { await toggleFavorita(t.id); toast(t.favorita ? 'Quitada de favoritas.' : 'Agregada a favoritas.', 'info') }}
-                      className={`mt-0.5 shrink-0 ${t.favorita ? 'text-sun-deep' : 'text-stone hover:text-sun-deep'}`}
+                      className={`-m-1 mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg ${t.favorita ? 'text-sun-deep' : 'text-stone hover:bg-cream hover:text-sun-deep'}`}
                       aria-label="Favorita"
                     >
                       <Star size={16} className={t.favorita ? 'fill-sun-deep' : ''} />
@@ -216,10 +216,10 @@ export function Flashcards() {
                       )}
                     </button>
                     <div className="flex shrink-0 flex-col gap-1">
-                      <button onClick={() => navigate(`/tarjetas/${t.id}`)} className="grid h-8 w-8 place-items-center rounded-lg text-stone hover:bg-cream hover:text-ink" aria-label="Editar">
+                      <button onClick={() => navigate(`/tarjetas/${t.id}`)} className="grid h-9 w-9 place-items-center rounded-lg text-stone hover:bg-cream hover:text-ink" aria-label="Editar">
                         <Pencil size={14} />
                       </button>
-                      <button onClick={async () => { await duplicarTarjeta(t.id); toast('Tarjeta duplicada.') }} className="grid h-8 w-8 place-items-center rounded-lg text-stone hover:bg-cream hover:text-ink" aria-label="Duplicar">
+                      <button onClick={async () => { await duplicarTarjeta(t.id); toast('Tarjeta duplicada.') }} className="grid h-9 w-9 place-items-center rounded-lg text-stone hover:bg-cream hover:text-ink" aria-label="Duplicar">
                         <Copy size={14} />
                       </button>
                       <button onClick={() => setConfirmar(t)} className="grid h-8 w-8 place-items-center rounded-lg text-stone hover:bg-coral-tint hover:text-coral" aria-label="Eliminar">

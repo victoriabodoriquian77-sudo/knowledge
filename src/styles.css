@@ -52,7 +52,7 @@
 .rich-content ol { margin-bottom: 8px; list-style: decimal; padding-left: 20px; }
 .rich-content strong { font-weight: 800; color: #24334a; }
 .rich-content em { font-style: italic; }
-.rich-content blockquote { margin: 8px 0; border-left: 4px solid rgba(121,97,216,.4); padding-left: 12px; font-style: italic; color: #718096; }
+.rich-content blockquote { margin: 8px 0; border-left: 4px solid rgba(121,97,216,.4); padding-left: 12px; font-style: italic; color: #5e6d81; }
 .rich-content img { margin: 8px 0; max-height: 256px; width: auto; border-radius: 12px; border: 1px solid #e8e5dc; }
-.rich-content a { color: #7961d8; text-decoration: underline; }
+.rich-content a { color: #6a51c4; text-decoration: underline; }
 .rich-content:empty::before { content: attr(data-placeholder); color: #aeb7c4; pointer-events: none; }

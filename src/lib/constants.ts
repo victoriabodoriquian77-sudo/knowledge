@@ -72,5 +72,5 @@ export const CONFIG_DEFAULT = {
   puntosPorAciertoKahoot: 100,
 }
 
-export const COLORES_MATERIA = ['#7961d8', '#23885c', '#f39a48', '#56b8d9', '#f17d78', '#f6c84a', '#35b779', '#8b6f47']
+export const COLORES_MATERIA = ['#6a51c4', '#1c7350', '#9a570f', '#1a7291', '#b83e37', '#f6c84a', '#35b779', '#8b6f47']
 export const ICONOS_MATERIA = ['scale', 'book-open', 'briefcase', 'flask-conical', 'calculator', 'globe', 'heart-pulse', 'atom']

@@ -51,6 +51,21 @@ export async function crearUnidad(datos: { materiaId: string; nombre: string; de
   return unidad
 }
 
+export async function actualizarUnidad(id: string, cambios: Partial<Unidad>): Promise<void> {
+  const { id: _id, materiaId: _m, ...permitidos } = cambios
+  void _id
+  void _m
+  await db.unidades.update(id, permitidos)
+}
+
+export async function actualizarSubtema(id: string, cambios: Partial<Subtema>): Promise<void> {
+  const { id: _id, materiaId: _m, unidadId: _u, ...permitidos } = cambios
+  void _id
+  void _m
+  void _u
+  await db.subtemas.update(id, permitidos)
+}
+
 export async function eliminarUnidad(id: string): Promise<void> {
   await db.transaction('rw', [db.unidades, db.subtemas, db.tarjetas, db.progreso], async () => {
     const subtemas = await db.subtemas.where('unidadId').equals(id).toArray()

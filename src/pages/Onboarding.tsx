@@ -5,7 +5,6 @@ import { Lumi } from '../components/mascot/Lumi'
 import { Logo } from '../components/layout/Logo'
 import { Button } from '../components/ui/Button'
 import { db } from '../db/database'
-import { crearMateriaDerecho } from '../db/seed'
 import { useToast } from '../hooks/useToast'
 
 type Paso = 0 | 1 | 2
@@ -14,7 +13,6 @@ export function Onboarding({ onCompletado }: { onCompletado: () => void }) {
   const [paso, setPaso] = useState<Paso>(0)
   const [nombre, setNombre] = useState('')
   const [objetivo, setObjetivo] = useState(15)
-  const [crearDerecho, setCrearDerecho] = useState(true)
   const [guardando, setGuardando] = useState(false)
   const { toast } = useToast()
 
@@ -32,7 +30,6 @@ export function Onboarding({ onCompletado }: { onCompletado: () => void }) {
         objetivoDiarioXp: objetivo * 4,
         onboardingCompletado: true,
       })
-      if (crearDerecho) await crearMateriaDerecho()
       toast(`¡Bienvenido/a, ${nombre.trim()}! Lumi ya te está esperando.`)
       onCompletado()
     } catch {
@@ -141,15 +138,12 @@ export function Onboarding({ onCompletado }: { onCompletado: () => void }) {
               <p className="mt-2 text-center text-[14px] font-semibold leading-relaxed text-muted">
                 Tus datos se guardan en este dispositivo, sin cuentas ni internet. Podés exportar una copia cuando quieras.
               </p>
-              <label className="mt-6 flex cursor-pointer items-start gap-3 rounded-2xl border-2 border-line bg-white p-4">
-                <input type="checkbox" checked={crearDerecho} onChange={(e) => setCrearDerecho(e.target.checked)} className="mt-0.5 h-4 w-4 accent-grape" />
-                <span>
-                  <span className="block text-[13.5px] font-extrabold text-ink">Empezar con Derecho → Unidad 1: Consumidores</span>
-                  <span className="mt-0.5 block text-[12px] font-semibold leading-snug text-muted">
-                    Se crea la materia, la unidad y su temario. Las tarjetas las cargás vos.
-                  </span>
-                </span>
-              </label>
+              <div className="mt-6 rounded-2xl border-2 border-line bg-white p-4">
+                <p className="text-[13.5px] font-extrabold text-ink">Tu biblioteca arranca vacía</p>
+                <p className="mt-1 text-[12px] font-semibold leading-snug text-muted">
+                  Creás tus materias, tus unidades y tus subtemas con los nombres que vos quieras. Nada viene armado de fábrica: la estructura la definís vos.
+                </p>
+              </div>
             </div>
           )}
         </motion.div>
