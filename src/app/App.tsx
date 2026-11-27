@@ -80,7 +80,7 @@ export function App() {
   if (onboarding) return <Onboarding onCompletado={() => setOnboarding(false)} />
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || undefined}>
       <ToastProvider>
         <Routes>
           <Route element={<AppShell />}>
