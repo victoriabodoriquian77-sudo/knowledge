@@ -66,6 +66,23 @@ export function archivoABase64(archivo: File): Promise<string> {
   })
 }
 
+/**
+ * Detecta el caso más común de un libro en PDF: páginas que en realidad son
+ * imágenes escaneadas. La IA las lee igual, pero conviene avisarlo porque el
+ * resultado depende de la calidad del escaneo.
+ */
+export async function esPdfEscaneado(archivo: File): Promise<boolean> {
+  try {
+    const buffer = await archivo.slice(0, 4096).arrayBuffer()
+    const cabecera = new TextDecoder('latin1').decode(buffer)
+    // Un PDF con texto real incluye fuentes embebidas o texto; uno escaneado
+    // tiene solo imágenes. Esta heurística es barata y solo orientativa.
+    return !/\/Font|\/Text/i.test(cabecera)
+  } catch {
+    return false
+  }
+}
+
 export function validarPdf(archivo: File): void {
   const esPdf = archivo.type === 'application/pdf' || /\.pdf$/i.test(archivo.name)
   if (!esPdf) throw new ErrorIA('El archivo tiene que ser un PDF.', 'documento')
@@ -127,6 +144,13 @@ function textoDe(respuesta: unknown): string {
   const candidato = r.candidates?.[0]
   if (candidato?.finishReason === 'SAFETY') {
     throw new ErrorIA('La IA bloqueó el contenido del documento. Probá con otro archivo.', 'documento')
+  }
+  if (candidato?.finishReason === 'MAX_TOKENS') {
+    // El libro tenía tanto contenido que el material no entraba en una respuesta.
+    throw new ErrorIA(
+      'Este documento es muy largo para procesarlo de una vez. Dividí el PDF en partes de unas 40 páginas (o por capítulo) y subilas por separado: la app las va sumando a la misma materia.',
+      'limite',
+    )
   }
   const texto = (candidato?.content?.parts ?? []).map((p) => p.text ?? '').join('')
   if (!texto.trim()) throw new ErrorIA('La IA no devolvió contenido. Probá de nuevo.', 'formato')

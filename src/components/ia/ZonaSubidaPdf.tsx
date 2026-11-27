@@ -99,8 +99,12 @@ export function ZonaSubidaPdf({
               </div>
               <p className="mt-3 text-[15.5px] font-extrabold text-ink">Arrastrá tu PDF acá</p>
               <p className="mx-auto mt-1 max-w-sm text-[12.5px] font-semibold leading-relaxed text-muted">
-                Apuntes, un capítulo, una ley o una guía. La IA lo lee entero y arma las unidades, los subtemas y las
-                tarjetas por vos.
+                Apuntes, un capítulo, una ley o las páginas de un libro. La IA lo lee entero y arma las unidades, los
+                subtemas y las tarjetas por vos.
+              </p>
+              <p className="mx-auto mt-2 max-w-sm text-[11px] font-semibold leading-relaxed text-stone">
+                Sirve tanto si el PDF tiene texto como si son páginas escaneadas (fotos del libro). Para libros de más
+                de 40 páginas, conviene subirlos por capítulo.
               </p>
               <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
                 <Button onClick={() => inputRef.current?.click()} tam="md">

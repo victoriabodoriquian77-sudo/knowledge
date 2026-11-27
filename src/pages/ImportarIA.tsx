@@ -26,6 +26,8 @@ export function ImportarIA() {
   const [materiaSugerida, setMateriaSugerida] = useState('')
   /** Materia existente elegida para agregar el material ('' = crear nueva). */
   const [destino, setDestino] = useState<string>('')
+  /** Al sumar a una materia existente: agregar al final o reemplazar lo anterior. */
+  const [modo, setModo] = useState<'agregar' | 'reemplazar'>('agregar')
 
   const materiaParam = params.get('materia')
 
@@ -95,10 +97,7 @@ export function ImportarIA() {
               totalTarjetas={totalTarjetas}
               importando={false}
               onConfirmar={() =>
-                void confirmar({
-                  materiaExistente: materiaElegida,
-                  modo: materiaElegida ? 'agregar' : 'agregar',
-                })
+                void confirmar({ materiaExistente: materiaElegida, modo })
               }
               onDescartar={reiniciar}
             />
@@ -130,24 +129,54 @@ export function ImportarIA() {
               />
 
               {materias && materias.length > 0 && (
-                <label className="mt-3 block">
-                  <span className="mb-1.5 block text-[10.5px] font-extrabold uppercase tracking-[0.12em] text-muted">
-                    Dónde guardarlo
-                  </span>
-                  <select
-                    id="ia-destino"
-                    className="field h-11 text-[13px]"
-                    value={destino}
-                    onChange={(e) => setDestino(e.target.value)}
-                  >
-                    <option value="">Crear una materia nueva</option>
-                    {materias.map((m) => (
-                      <option key={m.materia.id} value={m.materia.id}>
-                        Agregar a {m.materia.nombre}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <div className="mt-3 space-y-2">
+                  <label className="block">
+                    <span className="mb-1.5 block text-[10.5px] font-extrabold uppercase tracking-[0.12em] text-muted">
+                      Dónde guardarlo
+                    </span>
+                    <select
+                      id="ia-destino"
+                      className="field h-11 text-[13px]"
+                      value={destino}
+                      onChange={(e) => setDestino(e.target.value)}
+                    >
+                      <option value="">Crear una materia nueva</option>
+                      {materias.map((m) => (
+                        <option key={m.materia.id} value={m.materia.id}>
+                          Agregar a {m.materia.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  {materiaElegida && (
+                    <div className="rounded-xl border border-line bg-cream/60 p-2.5">
+                      <p className="text-[10.5px] font-extrabold uppercase tracking-[0.12em] text-muted">
+                        Qué hacer con lo que ya tiene
+                      </p>
+                      <div className="mt-1.5 flex flex-col gap-1.5 sm:flex-row">
+                        {(
+                          [
+                            { v: 'agregar', t: 'Sumar al final', d: 'Ideal si subís el libro por capítulos.' },
+                            { v: 'reemplazar', t: 'Reemplazar', d: 'Borra lo anterior de esa materia.' },
+                          ] as const
+                        ).map((o) => (
+                          <button
+                            key={o.v}
+                            onClick={() => setModo(o.v)}
+                            aria-pressed={modo === o.v}
+                            className={
+                              'flex-1 rounded-lg border-2 px-2.5 py-2 text-left transition ' +
+                              (modo === o.v ? 'border-grape bg-white' : 'border-line bg-white/60 hover:border-grape/40')
+                            }
+                          >
+                            <span className="block text-[11.5px] font-extrabold text-ink">{o.t}</span>
+                            <span className="block text-[10px] font-semibold leading-snug text-muted">{o.d}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
             </>
           )}

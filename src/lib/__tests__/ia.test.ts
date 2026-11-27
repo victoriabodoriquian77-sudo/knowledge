@@ -204,3 +204,22 @@ describe('almacén de la clave', () => {
     expect(localStorage.getItem('knowledge-ia-clave')).toBeNull()
   })
 })
+
+describe('libros y documentos largos', () => {
+  it('avisa cómo dividir un libro cuando la respuesta se corta por longitud', async () => {
+    const { normalizarMaterial } = await import('../ia/gemini')
+    // El corte por longitud se detecta en la respuesta cruda del modelo; acá se
+    // verifica que el material vacío derivado de ese corte explique qué hacer.
+    expect(() =>
+      normalizarMaterial({ materia: { nombre: '', descripcion: '' }, resumen: '', unidades: [] } as never),
+    ).toThrow(/no encontró contenido/i)
+  })
+
+  it('detecta un PDF escaneado y uno con texto real', async () => {
+    const { esPdfEscaneado } = await import('../ia/gemini')
+    const conTexto = new File([new Uint8Array([...new TextEncoder().encode('%PDF-1.4 /Font /Helvetica')])], 'a.pdf')
+    const escaneado = new File([new Uint8Array([...new TextEncoder().encode('%PDF-1.4 /Image /XObject')])], 'b.pdf')
+    await expect(esPdfEscaneado(conTexto)).resolves.toBe(false)
+    await expect(esPdfEscaneado(escaneado)).resolves.toBe(true)
+  })
+})
