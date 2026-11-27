@@ -124,19 +124,48 @@ export function generarVerdaderoFalso(t: Tarjeta, pool: Tarjeta[]): Ejercicio {
 export function generarCompletar(t: Tarjeta): Ejercicio {
   const conceptos = conceptosDe(t)
   const respuestaTexto = limpiar(t.respuesta)
-  let objetivo = conceptos.find((c) => respuestaTexto.toLowerCase().includes(c.toLowerCase()))
-  if (!objetivo) {
-    const palabras = respuestaTexto.split(/\s+/).filter((p) => p.length > 5)
-    objetivo = palabras.sort((a, b) => b.length - a.length)[0] ?? respuestaTexto.slice(0, 20)
+  const pista = limpiar(t.pregunta)
+
+  // Una respuesta corta ("Consumidor", "Trato digno") no da oración: borrarla
+  // dejaría solo "__________" sin nada que leer. En ese caso usamos la pregunta
+  // como oración y se completa con la respuesta.
+  const palabrasRespuesta = respuestaTexto.split(/\s+/).filter(Boolean)
+  const esCorta = palabrasRespuesta.length <= 3 || respuestaTexto.length < 25
+
+  if (esCorta) {
+    return {
+      tipo: 'completar',
+      tarjeta: t,
+      // La pregunta ya viene con su propio "?" o ":" ; conservamos el signo de
+      // cierre y agregamos el hueco después, sin comérnoslo.
+      oracion: /[?:]\s*$/.test(pista) ? `${pista} __________` : `${pista}: __________`,
+      respuesta: respuestaTexto,
+      pista: `Empieza con «${respuestaTexto.slice(0, 1).toUpperCase()}»`,
+    }
   }
-  const regex = new RegExp(objetivo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')
-  const oracion = respuestaTexto.replace(regex, '__________')
+
+  // Respuesta larga: elegimos un concepto concreto y lo tapamos dentro de la frase.
+  const palabraSuelta = (): string => {
+    const candidatas = palabrasRespuesta.filter((p) => p.length > 5 && !/^(porque|cuando|donde|mientras|aunque)$/i.test(p))
+    return candidatas.sort((a, b) => b.length - a.length)[0] ?? palabrasRespuesta[0] ?? respuestaTexto.slice(0, 20)
+  }
+
+  let objetivo = conceptos.find((c) => respuestaTexto.toLowerCase().includes(c.toLowerCase())) ?? palabraSuelta()
+  const tapar = (palabra: string) =>
+    respuestaTexto.replace(new RegExp(palabra.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), '__________')
+
+  let oracion = tapar(objetivo)
+  if (oracion.replace(/_+/g, '').replace(/[^\p{L}]/gu, '').length < 8) {
+    objetivo = palabraSuelta()
+    oracion = tapar(objetivo)
+    if (oracion === respuestaTexto) oracion = `${respuestaTexto} → __________`
+  }
   return {
     tipo: 'completar',
     tarjeta: t,
-    oracion: oracion === respuestaTexto ? `${respuestaTexto} → __________` : oracion,
+    oracion,
     respuesta: objetivo,
-    pista: limpiar(t.pregunta),
+    pista,
   }
 }
 
@@ -166,7 +195,31 @@ function definicionCorta(t: Tarjeta): string {
 }
 
 export function generarRelacionar(tarjetas: Tarjeta[], cantidad = 4): Ejercicio {
-  const elegidas = shuffle(tarjetas).slice(0, Math.max(3, Math.min(cantidad, tarjetas.length)))
+  const objetivo = Math.max(3, Math.min(cantidad, tarjetas.length))
+
+  // Dos tarjetas con la misma pregunta (o la misma definición) darían etiquetas
+  // idénticas: en pantalla no se podría saber cuál es cuál y el par quedaría
+  // imposible de armar. Se eligen solo tarjetas que aporten algo distinto.
+  const usadasIzq = new Set<string>()
+  const usadasDer = new Set<string>()
+  const elegidas: Tarjeta[] = []
+  for (const t of shuffle(tarjetas)) {
+    if (elegidas.length >= objetivo) break
+    const izq = etiquetaCorta(t).toLowerCase()
+    const der = definicionCorta(t).toLowerCase()
+    if (usadasIzq.has(izq) || usadasDer.has(der)) continue
+    usadasIzq.add(izq)
+    usadasDer.add(der)
+    elegidas.push(t)
+  }
+  // Si no alcanzan las distintas, se completa con las que haya (mejor eso que menos pares).
+  if (elegidas.length < Math.min(3, tarjetas.length)) {
+    for (const t of tarjetas) {
+      if (elegidas.length >= Math.min(3, tarjetas.length)) break
+      if (!elegidas.some((x) => x.id === t.id)) elegidas.push(t)
+    }
+  }
+
   return {
     tipo: 'relacionar',
     tarjetas: elegidas,
