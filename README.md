@@ -2,7 +2,7 @@
 
 Plataforma de estudio activo en español: recorrido tipo Duolingo + juegos tipo Kahoot, con repaso espaciado real y estadísticas que salen únicamente de tus sesiones.
 
-Primera materia incluida: **Derecho — Unidad 1: Consumidores** (6 subtemas). Podés agregar cualquier otra materia, unidad o subtema.
+**La biblioteca arranca vacía.** No hay materias, unidades ni subtemas de fábrica: los creás vos con los nombres que quieras. La app trae el recorrido, los juegos y el motor de repaso, no el contenido.
 
 ## Qué hace
 
@@ -40,6 +40,8 @@ npm run build        # build de producción + service worker
 ```
 
 Las pruebas cubren el motor de repaso espaciado, el desbloqueo secuencial, la evaluación de respuestas abiertas y el indicador de preparación.
+
+Verificado además de punta a punta en navegador real: las 13 modalidades se completan sin errores de consola, el récord de Kahoot persiste, recargar no duplica XP ni monedas, el respaldo JSON se restaura y la app funciona sin conexión en todas las rutas (iPhone 14, iPhone SE, iPad y escritorio, sin desborde horizontal).
 
 ## Stack
 
